@@ -1,0 +1,4 @@
+name: aws-elb
+summary: Subordinate relationship for aws-elb
+version: 1
+maintainer: "James Beedy <jamesbeedy@gmail.com>"
