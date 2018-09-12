@@ -1,5 +1,5 @@
 from charms.reactive import when
-from charms.reactive import set_flag, clear_flag
+from charms.reactive import set_flag
 from charms.reactive import Endpoint
 
 
@@ -7,7 +7,8 @@ class AwsElbRequires(Endpoint):
 
     @when('endpoint.{endpoint_name}.joined')
     def joined(self):
-        if any(unit.received['port'] for unit in self.all_joined_units):
+        if any(unit.received['instance_port']
+               for unit in self.all_joined_units):
             set_flag(self.expand_name('available'))
 
     def list_unit_data(self):
@@ -29,10 +30,14 @@ class AwsElbRequires(Endpoint):
         units_data = []
         for relation in self.relations:
             for unit in relation.joined_units:
-                port = unit.received['port']
-                if not port:
+                instance_id = unit.received['instance_id']
+                instance_region = unit.received['instance_region']
+                instance_port = unit.received['instance_port']
+                if not (instance_id and instance_region and instance_port):
                     continue
                 units_data.append({
-                    'port': port,
+                    'instance_id': instance_id,
+                    'instance_region': instance_region,
+                    'instance_port': instance_port,
                 })
         return units_data
