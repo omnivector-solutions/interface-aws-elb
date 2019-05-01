@@ -15,7 +15,6 @@ class AwsElbRequires(Endpoint):
     def departed(self):
         clear_flag(self.expand_name('available'))
 
-
     def list_unit_data(self):
         """
         Get the list of the relation info for each unit.
